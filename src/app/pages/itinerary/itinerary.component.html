@@ -1,0 +1,24 @@
+<div class="itinerary-container">
+
+      <h1>My Itinerary</h1>
+
+      <div class="itinerary-grid">
+        <mat-card *ngFor="let day of tripService.itinerary()">
+          <div class="card-header">
+            <span class="card-date">{{ day.date }}</span>
+          </div>
+
+          <ul class="plan-list">
+            <li *ngFor="let plan of day.plans">{{ plan }}</li>
+          </ul>
+
+          <div class="add-plan">
+            <input type="text" [(ngModel)]="newPlan[day.date]" placeholder="Add plan" />
+            <button mat-raised-button color="primary" (click)="addPlan(day.date)">
+              Add
+            </button>
+          </div>
+        </mat-card>
+      </div>
+
+    </div>

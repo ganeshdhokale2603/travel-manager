@@ -1,0 +1,62 @@
+<mat-toolbar color="primary">Trip Management</mat-toolbar>
+
+<div class="layout trip-page">
+
+  <!-- LEFT: Create Trip -->
+  <mat-card class="form-card">
+    <h3>Create New Trip</h3>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Destination</mat-label>
+      <input matInput [(ngModel)]="destination">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Start Date</mat-label>
+      <input matInput type="date" [(ngModel)]="start">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>End Date</mat-label>
+      <input matInput type="date" [(ngModel)]="end">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Add Activity</mat-label>
+      <input matInput #a>
+    </mat-form-field>
+
+    <button mat-stroked-button (click)="addActivity(a.value); a.value=''">
+      Add Activity
+    </button>
+
+    <mat-chip-listbox>
+      <mat-chip *ngFor="let act of activities">{{ act }}</mat-chip>
+    </mat-chip-listbox>
+
+    <button mat-raised-button color="primary" class="create"
+            (click)="createTrip()">
+      Create Trip
+    </button>
+  </mat-card>
+
+  <!-- RIGHT: Trips List -->
+  <div class="trip-list trip-grid">
+    <mat-card *ngFor="let t of service.trips()">
+      <mat-card-title>{{ t.destination }}</mat-card-title>
+      <mat-card-subtitle>
+        {{ t.startDate }} → {{ t.endDate }}
+      </mat-card-subtitle>
+
+      <mat-chip-listbox>
+        <mat-chip *ngFor="let a of t.activities">{{ a }}</mat-chip>
+      </mat-chip-listbox>
+
+      <button mat-button color="warn"
+              (click)="service.deleteTrip(t.id)">
+        Delete
+      </button>
+    </mat-card>
+  </div>
+
+</div>

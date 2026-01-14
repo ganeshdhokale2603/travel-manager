@@ -1,0 +1,59 @@
+<mat-toolbar color="primary">
+      Expense Tracker
+      <span class="spacer"></span>
+      <button mat-raised-button color="accent" (click)="open()">+ Add</button>
+    </mat-toolbar>
+
+    <div class="filter">
+      <mat-form-field appearance="outline">
+        <mat-label>Select Trip</mat-label>
+        <mat-select
+          [value]="selectedTrip()"
+          (valueChange)="selectedTrip.set($event)">
+          <mat-option *ngFor="let t of tripService.trips()" [value]="t.id">
+            {{ t.destination }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <ng-container *ngIf="selectedTrip() !== null">
+      <ng-container *ngIf="expensesForSelectedTrip().length; else emptyState">
+        <div class="grid">
+  <mat-card *ngFor="let e of expensesForSelectedTrip()" class="expense-card">
+    <mat-card-header>
+      <div class="icon" [ngClass]="e.category.toLowerCase()">
+        <mat-icon>{{ getIcon(e.category) }}</mat-icon>
+      </div>
+      <div>
+        <mat-card-title>{{ e.category }}</mat-card-title>
+        <mat-card-subtitle>{{ e.note }}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <h2 class="amount">{{ e.amount | currency:'INR':'symbol':'1.0-0' }}</h2>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+        <div class="summary">
+  <mat-card class="total-card">
+    <mat-icon>account_balance_wallet</mat-icon>
+    <div>
+      <h3>Total Spent</h3>
+      <h1>{{ totalForSelectedTrip() | currency:'INR':'symbol':'1.0-0' }}</h1>
+    </div>
+  </mat-card>
+</div>
+
+      </ng-container>
+
+      <ng-template #emptyState>
+        <div class="empty">
+          <h3>No expenses yet</h3>
+          <p>Add an expense to get started.</p>
+        </div>
+      </ng-template>
+    </ng-container>
